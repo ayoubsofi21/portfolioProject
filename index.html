@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,19 +20,39 @@
         padding: 0;
       }
 
-      :root {
+      /* ── DARK THEME (default) ── */
+      :root,
+      [data-theme="dark"] {
         --bg: #0a0a0b;
         --surface: #111114;
         --surface2: #18181d;
         --border: rgba(255, 255, 255, 0.07);
         --text: #e8e8ec;
+        --text-sub: #a0a0b0;
         --muted: #6b6b7a;
         --accent: #7fff6e;
         --accent2: #5b8eff;
-        --accent3: #ff6b6b;
-        --font-display: "Syne", sans-serif;
-        --font-mono: "DM Mono", monospace;
-        --font-serif: "Instrument Serif", serif;
+        --nav-bg: rgba(10, 10, 11, 0.75);
+        --shadow: rgba(0, 0, 0, 0.45);
+        --glow: rgba(127, 255, 110, 0.06);
+        --grid-line: rgba(255, 255, 255, 0.07);
+      }
+
+      /* ── LIGHT THEME ── */
+      [data-theme="light"] {
+        --bg: #f2f2ee;
+        --surface: #ffffff;
+        --surface2: #e8e8e4;
+        --border: rgba(0, 0, 0, 0.09);
+        --text: #111114;
+        --text-sub: #44444f;
+        --muted: #88889a;
+        --accent: #1a8f0a;
+        --accent2: #2653cc;
+        --nav-bg: rgba(242, 242, 238, 0.85);
+        --shadow: rgba(0, 0, 0, 0.1);
+        --glow: rgba(26, 143, 10, 0.05);
+        --grid-line: rgba(0, 0, 0, 0.06);
       }
 
       html {
@@ -40,14 +60,17 @@
       }
 
       body {
-        font-family: var(--font-display);
+        font-family: "Syne", sans-serif;
         background: var(--bg);
         color: var(--text);
         overflow-x: hidden;
         cursor: none;
+        transition:
+          background 0.4s,
+          color 0.4s;
       }
 
-      /* CURSOR */
+      /* ── CURSOR ── */
       #cursor {
         position: fixed;
         top: 0;
@@ -63,8 +86,11 @@
           transform 0.1s,
           width 0.3s,
           height 0.3s,
-          background 0.3s;
+          background 0.4s;
         mix-blend-mode: difference;
+      }
+      [data-theme="light"] #cursor {
+        mix-blend-mode: normal;
       }
       #cursor-ring {
         position: fixed;
@@ -80,26 +106,30 @@
         transition:
           transform 0.15s ease-out,
           width 0.3s,
-          height 0.3s;
+          height 0.3s,
+          border-color 0.4s;
       }
-      body:hover #cursor {
-        opacity: 1;
+      [data-theme="light"] #cursor-ring {
+        border-color: rgba(26, 143, 10, 0.4);
       }
 
-      /* NAV */
+      /* ── NAV ── */
       nav {
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
         z-index: 100;
-        padding: 24px 40px;
+        padding: 22px 40px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         backdrop-filter: blur(20px);
-        background: rgba(10, 10, 11, 0.7);
+        background: var(--nav-bg);
         border-bottom: 1px solid var(--border);
+        transition:
+          background 0.4s,
+          border-color 0.4s;
       }
       .nav-logo {
         font-size: 15px;
@@ -107,7 +137,8 @@
         letter-spacing: 0.05em;
         color: var(--accent);
         text-decoration: none;
-        font-family: var(--font-mono);
+        font-family: "DM Mono", monospace;
+        transition: color 0.4s;
       }
       .nav-links {
         display: flex;
@@ -139,6 +170,49 @@
       .nav-links a:hover::after {
         width: 100%;
       }
+
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      /* ── THEME TOGGLE PILL ── */
+      #themeBtn {
+        position: relative;
+        width: 52px;
+        height: 28px;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        cursor: none;
+        flex-shrink: 0;
+        transition:
+          background 0.4s,
+          border-color 0.4s;
+        outline: none;
+      }
+      #themeBtn .pill {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        line-height: 1;
+        transition:
+          transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+          background 0.4s;
+      }
+      [data-theme="light"] #themeBtn .pill {
+        transform: translateX(24px);
+      }
+
       .nav-cta {
         font-size: 12px;
         font-weight: 600;
@@ -151,14 +225,16 @@
         text-decoration: none;
         transition:
           opacity 0.2s,
-          transform 0.2s;
+          transform 0.2s,
+          background 0.4s,
+          color 0.4s;
       }
       .nav-cta:hover {
         opacity: 0.85;
         transform: translateY(-1px);
       }
 
-      /* HERO */
+      /* ── HERO ── */
       #hero {
         min-height: 100vh;
         display: grid;
@@ -172,28 +248,26 @@
         position: absolute;
         inset: 0;
         background-image:
-          linear-gradient(var(--border) 1px, transparent 1px),
-          linear-gradient(90deg, var(--border) 1px, transparent 1px);
+          linear-gradient(var(--grid-line) 1px, transparent 1px),
+          linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
         background-size: 60px 60px;
         mask-image: radial-gradient(
           ellipse 80% 80% at 50% 50%,
           black 20%,
           transparent 100%
         );
+        transition: opacity 0.4s;
       }
       .hero-glow {
         position: absolute;
         width: 600px;
         height: 600px;
-        background: radial-gradient(
-          circle,
-          rgba(127, 255, 110, 0.06) 0%,
-          transparent 70%
-        );
+        background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
         top: 50%;
         left: 30%;
         transform: translate(-50%, -50%);
         pointer-events: none;
+        transition: background 0.4s;
       }
       .hero-left {
         position: relative;
@@ -203,15 +277,23 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        font-family: var(--font-mono);
+        font-family: "DM Mono", monospace;
         font-size: 12px;
         color: var(--accent);
         background: rgba(127, 255, 110, 0.08);
-        border: 1px solid rgba(127, 255, 110, 0.2);
+        border: 1px solid rgba(127, 255, 110, 0.22);
         padding: 6px 14px;
         border-radius: 20px;
         margin-bottom: 28px;
         animation: fadeUp 0.6s ease both;
+        transition:
+          background 0.4s,
+          border-color 0.4s,
+          color 0.4s;
+      }
+      [data-theme="light"] .hero-badge {
+        background: rgba(26, 143, 10, 0.07);
+        border-color: rgba(26, 143, 10, 0.25);
       }
       .hero-badge span {
         width: 6px;
@@ -219,6 +301,7 @@
         background: var(--accent);
         border-radius: 50%;
         animation: pulse 2s infinite;
+        transition: background 0.4s;
       }
       @keyframes pulse {
         0%,
@@ -250,9 +333,10 @@
         animation: fadeUp 0.7s 0.1s ease both;
       }
       .hero-name em {
-        font-family: var(--font-serif);
+        font-family: "Instrument Serif", serif;
         font-style: italic;
         color: var(--accent);
+        transition: color 0.4s;
       }
       .hero-role {
         font-size: 14px;
@@ -261,7 +345,7 @@
         text-transform: uppercase;
         color: var(--muted);
         margin-top: 20px;
-        font-family: var(--font-mono);
+        font-family: "DM Mono", monospace;
         animation: fadeUp 0.7s 0.2s ease both;
       }
       .hero-desc {
@@ -278,6 +362,7 @@
         margin-top: 40px;
         animation: fadeUp 0.7s 0.4s ease both;
       }
+
       .btn-primary {
         display: inline-flex;
         align-items: center;
@@ -293,13 +378,18 @@
         text-decoration: none;
         transition:
           transform 0.2s,
-          box-shadow 0.2s;
-        box-shadow: 0 0 0 0 rgba(127, 255, 110, 0.4);
+          box-shadow 0.2s,
+          background 0.4s,
+          color 0.4s;
       }
       .btn-primary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 30px rgba(127, 255, 110, 0.25);
+        box-shadow: 0 8px 30px rgba(127, 255, 110, 0.2);
       }
+      [data-theme="light"] .btn-primary:hover {
+        box-shadow: 0 8px 30px rgba(26, 143, 10, 0.18);
+      }
+
       .btn-secondary {
         display: inline-flex;
         align-items: center;
@@ -315,11 +405,15 @@
         text-decoration: none;
         transition:
           border-color 0.2s,
-          background 0.2s;
+          background 0.2s,
+          color 0.4s;
       }
       .btn-secondary:hover {
         border-color: var(--accent);
         background: rgba(127, 255, 110, 0.05);
+      }
+      [data-theme="light"] .btn-secondary:hover {
+        background: rgba(26, 143, 10, 0.05);
       }
 
       .hero-right {
@@ -341,18 +435,23 @@
         gap: 16px;
         transition:
           border-color 0.3s,
-          transform 0.3s;
+          transform 0.3s,
+          background 0.4s;
+        box-shadow: 0 2px 12px var(--shadow);
       }
       .stat-card:hover {
         border-color: rgba(127, 255, 110, 0.3);
         transform: translateX(6px);
+      }
+      [data-theme="light"] .stat-card:hover {
+        border-color: rgba(26, 143, 10, 0.3);
       }
       .stat-icon {
         font-size: 28px;
       }
       .stat-label {
         font-size: 11px;
-        font-family: var(--font-mono);
+        font-family: "DM Mono", monospace;
         color: var(--muted);
         text-transform: uppercase;
         letter-spacing: 0.1em;
@@ -363,19 +462,20 @@
         color: var(--text);
       }
 
-      /* MARQUEE */
+      /* ── MARQUEE ── */
       .marquee-wrap {
         overflow: hidden;
         border-top: 1px solid var(--border);
         border-bottom: 1px solid var(--border);
         padding: 14px 0;
         background: var(--surface);
+        transition: background 0.4s;
       }
       .marquee-track {
         display: flex;
         gap: 48px;
         width: max-content;
-        animation: marquee 20s linear infinite;
+        animation: marquee 22s linear infinite;
       }
       @keyframes marquee {
         to {
@@ -383,7 +483,7 @@
         }
       }
       .marquee-item {
-        font-family: var(--font-mono);
+        font-family: "DM Mono", monospace;
         font-size: 12px;
         letter-spacing: 0.15em;
         text-transform: uppercase;
@@ -397,14 +497,15 @@
         content: "◆";
         color: var(--accent);
         font-size: 8px;
+        transition: color 0.4s;
       }
 
-      /* SECTIONS */
+      /* ── SECTIONS ── */
       section {
         padding: 100px 80px;
       }
       .section-label {
-        font-family: var(--font-mono);
+        font-family: "DM Mono", monospace;
         font-size: 11px;
         letter-spacing: 0.2em;
         text-transform: uppercase;
@@ -413,6 +514,7 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        transition: color 0.4s;
       }
       .section-label::before {
         content: "";
@@ -420,6 +522,7 @@
         width: 30px;
         height: 1px;
         background: var(--accent);
+        transition: background 0.4s;
       }
       .section-title {
         font-size: clamp(36px, 4vw, 56px);
@@ -428,14 +531,16 @@
         line-height: 1.05;
       }
       .section-title em {
-        font-family: var(--font-serif);
+        font-family: "Instrument Serif", serif;
         font-style: italic;
         color: var(--accent);
+        transition: color 0.4s;
       }
 
-      /* ABOUT */
+      /* ── ABOUT ── */
       #about {
         background: var(--surface);
+        transition: background 0.4s;
       }
       .about-grid {
         display: grid;
@@ -443,9 +548,6 @@
         gap: 80px;
         align-items: center;
         margin-top: 60px;
-      }
-      .about-visual {
-        position: relative;
       }
       .about-photo-frame {
         position: relative;
@@ -462,6 +564,10 @@
         border: 1px solid rgba(127, 255, 110, 0.3);
         border-radius: 12px;
         z-index: 0;
+        transition: border-color 0.4s;
+      }
+      [data-theme="light"] .about-photo-frame::before {
+        border-color: rgba(26, 143, 10, 0.25);
       }
       .about-photo {
         position: relative;
@@ -476,6 +582,7 @@
         align-items: center;
         justify-content: center;
         font-size: 80px;
+        transition: background 0.4s;
       }
       .about-photo img {
         width: 100%;
@@ -489,18 +596,21 @@
         z-index: 2;
         background: var(--accent);
         color: var(--bg);
-        font-family: var(--font-mono);
+        font-family: "DM Mono", monospace;
         font-size: 11px;
         font-weight: 600;
         letter-spacing: 0.1em;
         text-transform: uppercase;
         padding: 10px 16px;
         border-radius: 8px;
+        transition:
+          background 0.4s,
+          color 0.4s;
       }
       .about-text p {
         font-size: 16px;
         line-height: 1.9;
-        color: #a0a0b0;
+        color: var(--text-sub);
         margin-bottom: 20px;
       }
       .about-text p strong {
@@ -518,9 +628,10 @@
         border: 1px solid var(--border);
         border-radius: 10px;
         padding: 16px 20px;
+        transition: background 0.4s;
       }
       .about-meta-label {
-        font-family: var(--font-mono);
+        font-family: "DM Mono", monospace;
         font-size: 10px;
         letter-spacing: 0.15em;
         text-transform: uppercase;
@@ -532,9 +643,10 @@
         margin-top: 4px;
       }
 
-      /* SKILLS */
+      /* ── SKILLS ── */
       #skills {
         background: var(--bg);
+        transition: background 0.4s;
       }
       .skills-grid {
         display: grid;
@@ -550,7 +662,8 @@
         transition:
           border-color 0.3s,
           transform 0.3s,
-          box-shadow 0.3s;
+          box-shadow 0.3s,
+          background 0.4s;
         position: relative;
         overflow: hidden;
       }
@@ -573,7 +686,10 @@
       .skill-card:hover {
         border-color: rgba(127, 255, 110, 0.2);
         transform: translateY(-4px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 20px 40px var(--shadow);
+      }
+      [data-theme="light"] .skill-card:hover {
+        border-color: rgba(26, 143, 10, 0.2);
       }
       .skill-card:hover::before {
         opacity: 1;
@@ -594,7 +710,7 @@
         margin-top: 14px;
       }
       .skill-tag {
-        font-family: var(--font-mono);
+        font-family: "DM Mono", monospace;
         font-size: 10px;
         letter-spacing: 0.08em;
         text-transform: uppercase;
@@ -603,6 +719,10 @@
         color: var(--muted);
         padding: 4px 10px;
         border-radius: 4px;
+        transition: background 0.4s;
+      }
+      [data-theme="light"] .skill-tag {
+        background: rgba(0, 0, 0, 0.04);
       }
       .skill-bar-wrap {
         margin-top: 14px;
@@ -612,13 +732,14 @@
         background: var(--surface2);
         border-radius: 2px;
         overflow: hidden;
+        transition: background 0.4s;
       }
       .skill-bar {
         height: 100%;
         background: var(--accent);
         border-radius: 2px;
         width: 0;
-        transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: background 0.4s;
       }
       .skill-bar-label {
         display: flex;
@@ -626,19 +747,21 @@
         margin-bottom: 6px;
       }
       .skill-bar-text {
-        font-family: var(--font-mono);
+        font-family: "DM Mono", monospace;
         font-size: 11px;
         color: var(--muted);
       }
       .skill-bar-pct {
-        font-family: var(--font-mono);
+        font-family: "DM Mono", monospace;
         font-size: 11px;
         color: var(--accent);
+        transition: color 0.4s;
       }
 
-      /* PROJECTS */
+      /* ── PROJECTS ── */
       #projects {
         background: var(--surface);
+        transition: background 0.4s;
       }
       .projects-grid {
         display: grid;
@@ -653,7 +776,8 @@
         padding: 36px;
         transition:
           border-color 0.3s,
-          transform 0.3s;
+          transform 0.3s,
+          background 0.4s;
         position: relative;
         overflow: hidden;
         display: flex;
@@ -663,12 +787,16 @@
         border-color: rgba(127, 255, 110, 0.25);
         transform: translateY(-6px);
       }
+      [data-theme="light"] .project-card:hover {
+        border-color: rgba(26, 143, 10, 0.25);
+      }
       .project-card-number {
-        font-family: var(--font-mono);
+        font-family: "DM Mono", monospace;
         font-size: 11px;
         color: var(--accent);
         letter-spacing: 0.1em;
         margin-bottom: 20px;
+        transition: color 0.4s;
       }
       .project-card-title {
         font-size: 22px;
@@ -689,7 +817,7 @@
         margin-top: 24px;
       }
       .project-tech-tag {
-        font-family: var(--font-mono);
+        font-family: "DM Mono", monospace;
         font-size: 10px;
         letter-spacing: 0.05em;
         color: var(--accent2);
@@ -697,6 +825,13 @@
         border: 1px solid rgba(91, 142, 255, 0.15);
         padding: 4px 10px;
         border-radius: 4px;
+        transition:
+          color 0.4s,
+          background 0.4s;
+      }
+      [data-theme="light"] .project-tech-tag {
+        background: rgba(38, 83, 204, 0.07);
+        border-color: rgba(38, 83, 204, 0.18);
       }
       .project-card-footer {
         display: flex;
@@ -707,7 +842,7 @@
         border-top: 1px solid var(--border);
       }
       .project-status {
-        font-family: var(--font-mono);
+        font-family: "DM Mono", monospace;
         font-size: 11px;
         display: flex;
         align-items: center;
@@ -719,6 +854,7 @@
         height: 6px;
         background: var(--accent);
         border-radius: 50%;
+        transition: background 0.4s;
       }
       .project-link {
         font-size: 12px;
@@ -743,7 +879,6 @@
         transform: translateX(4px);
       }
 
-      /* FEATURED project */
       .project-card.featured {
         grid-column: 1 / -1;
         background: linear-gradient(
@@ -756,6 +891,14 @@
         gap: 40px;
         align-items: center;
       }
+      [data-theme="light"] .project-card.featured {
+        background: linear-gradient(
+          135deg,
+          rgba(26, 143, 10, 0.04),
+          rgba(38, 83, 204, 0.04)
+        );
+        border-color: rgba(26, 143, 10, 0.15);
+      }
       .project-card.featured .project-card-content {
         flex: 1;
       }
@@ -766,16 +909,17 @@
         background: var(--surface2);
         border-radius: 10px;
         border: 1px solid var(--border);
-        overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 60px;
+        transition: background 0.4s;
       }
 
-      /* CONTACT */
+      /* ── CONTACT ── */
       #contact {
         background: var(--bg);
+        transition: background 0.4s;
       }
       .contact-grid {
         display: grid;
@@ -807,11 +951,15 @@
         color: var(--text);
         transition:
           border-color 0.3s,
-          transform 0.2s;
+          transform 0.2s,
+          background 0.4s;
       }
       .contact-link:hover {
         border-color: rgba(127, 255, 110, 0.3);
         transform: translateX(6px);
+      }
+      [data-theme="light"] .contact-link:hover {
+        border-color: rgba(26, 143, 10, 0.3);
       }
       .contact-link-icon {
         font-size: 22px;
@@ -820,7 +968,7 @@
       }
       .contact-link-label {
         font-size: 11px;
-        font-family: var(--font-mono);
+        font-family: "DM Mono", monospace;
         text-transform: uppercase;
         letter-spacing: 0.1em;
         color: var(--muted);
@@ -852,7 +1000,7 @@
         gap: 8px;
       }
       .form-label {
-        font-family: var(--font-mono);
+        font-family: "DM Mono", monospace;
         font-size: 11px;
         text-transform: uppercase;
         letter-spacing: 0.1em;
@@ -865,14 +1013,25 @@
         border-radius: 8px;
         padding: 14px 16px;
         color: var(--text);
-        font-family: var(--font-display);
+        font-family: "Syne", sans-serif;
         font-size: 14px;
         outline: none;
-        transition: border-color 0.2s;
+        transition:
+          border-color 0.2s,
+          background 0.4s,
+          color 0.4s;
+      }
+      .form-input::placeholder,
+      .form-textarea::placeholder {
+        color: var(--muted);
       }
       .form-input:focus,
       .form-textarea:focus {
         border-color: rgba(127, 255, 110, 0.4);
+      }
+      [data-theme="light"] .form-input:focus,
+      [data-theme="light"] .form-textarea:focus {
+        border-color: rgba(26, 143, 10, 0.4);
       }
       .form-textarea {
         min-height: 120px;
@@ -884,7 +1043,7 @@
         border: none;
         border-radius: 8px;
         padding: 14px 28px;
-        font-family: var(--font-display);
+        font-family: "Syne", sans-serif;
         font-size: 13px;
         font-weight: 700;
         letter-spacing: 0.08em;
@@ -892,14 +1051,16 @@
         cursor: none;
         transition:
           opacity 0.2s,
-          transform 0.2s;
+          transform 0.2s,
+          background 0.4s,
+          color 0.4s;
       }
       .form-submit:hover {
         opacity: 0.85;
         transform: translateY(-2px);
       }
 
-      /* FOOTER */
+      /* ── FOOTER ── */
       footer {
         border-top: 1px solid var(--border);
         padding: 32px 80px;
@@ -907,9 +1068,10 @@
         justify-content: space-between;
         align-items: center;
         background: var(--surface);
+        transition: background 0.4s;
       }
       .footer-left {
-        font-family: var(--font-mono);
+        font-family: "DM Mono", monospace;
         font-size: 12px;
         color: var(--muted);
       }
@@ -918,7 +1080,7 @@
         gap: 28px;
       }
       .footer-right a {
-        font-family: var(--font-mono);
+        font-family: "DM Mono", monospace;
         font-size: 12px;
         color: var(--muted);
         text-decoration: none;
@@ -928,7 +1090,7 @@
         color: var(--accent);
       }
 
-      /* SCROLL REVEAL */
+      /* ── SCROLL REVEAL ── */
       .reveal {
         opacity: 0;
         transform: translateY(30px);
@@ -950,7 +1112,7 @@
         transition-delay: 0.3s;
       }
 
-      /* SCROLLBAR */
+      /* ── SCROLLBAR ── */
       ::-webkit-scrollbar {
         width: 4px;
       }
@@ -962,10 +1124,10 @@
         border-radius: 2px;
       }
 
-      /* RESPONSIVE */
+      /* ── RESPONSIVE ── */
       @media (max-width: 900px) {
         nav {
-          padding: 20px 24px;
+          padding: 18px 20px;
         }
         .nav-links {
           display: none;
@@ -1008,7 +1170,6 @@
     </style>
   </head>
   <body>
-    <!-- CUSTOM CURSOR -->
     <div id="cursor"></div>
     <div id="cursor-ring"></div>
 
@@ -1021,15 +1182,23 @@
         <a href="#projects">Projects</a>
         <a href="#contact">Contact</a>
       </div>
-      <!-- <a href="mailto:ayoubsofi03@gmail.com" class="nav-cta">Hire Me</a> -->
-      <a href="#send_message" class="nav-cta">Hire Me</a>
+      <div class="nav-right">
+        <!-- Toggle pill: shows moon in dark, sun in light -->
+        <button
+          id="themeBtn"
+          aria-label="Toggle light/dark theme"
+          title="Toggle theme"
+        >
+          <span class="pill" id="themeIcon">🌙</span>
+        </button>
+        <a href="#send_message" class="nav-cta">Hire Me</a>
+      </div>
     </nav>
 
     <!-- HERO -->
     <section id="hero">
       <div class="hero-grid-bg"></div>
       <div class="hero-glow"></div>
-
       <div class="hero-left">
         <div class="hero-badge"><span></span> Available for freelance</div>
         <h1 class="hero-name">Full Stack<br /><em>Engineer</em></h1>
@@ -1043,7 +1212,6 @@
           <a href="#contact" class="btn-secondary">Get In Touch</a>
         </div>
       </div>
-
       <div class="hero-right">
         <div class="stat-card">
           <div class="stat-icon">🚀</div>
@@ -1112,7 +1280,6 @@
       <h2 class="section-title reveal reveal-delay-1">
         The engineer behind<br />the <em>code</em>
       </h2>
-
       <div class="about-grid">
         <div class="about-visual reveal">
           <div class="about-photo-frame">
@@ -1126,7 +1293,6 @@
             <div class="about-tag">Based in Morocco 🇲🇦</div>
           </div>
         </div>
-
         <div class="about-text reveal reveal-delay-2">
           <p>
             I'm <strong>Ayoub Sofi</strong>, a Full-Stack Developer specialized
@@ -1142,7 +1308,6 @@
             <strong>performance, security, and scalability</strong> from day
             one.
           </p>
-
           <div class="about-meta">
             <div class="about-meta-item">
               <div class="about-meta-label">Specialization</div>
@@ -1173,133 +1338,127 @@
       <h2 class="section-title reveal reveal-delay-1">
         What I <em>build</em><br />with
       </h2>
-
       <div class="skills-grid">
         <div class="skill-card reveal">
           <div class="skill-card-icon">⚙️</div>
           <div class="skill-card-name">Backend Development</div>
           <div class="skill-bar-wrap">
             <div class="skill-bar-label">
-              <span class="skill-bar-text">Laravel / PHP</span>
-              <span class="skill-bar-pct">90%</span>
+              <span class="skill-bar-text">Laravel / PHP</span
+              ><span class="skill-bar-pct">90%</span>
             </div>
             <div class="skill-bar-bg">
               <div class="skill-bar" data-width="90%"></div>
             </div>
           </div>
           <div class="skill-card-tags">
-            <span class="skill-tag">Laravel</span>
-            <span class="skill-tag">PHP</span>
-            <span class="skill-tag">Eloquent ORM</span>
-            <span class="skill-tag">REST API</span>
-            <span class="skill-tag">Auth</span>
-            <span class="skill-tag">Queues</span>
+            <span class="skill-tag">Laravel</span
+            ><span class="skill-tag">PHP</span
+            ><span class="skill-tag">Eloquent ORM</span
+            ><span class="skill-tag">REST API</span
+            ><span class="skill-tag">Auth</span
+            ><span class="skill-tag">Queues</span>
           </div>
         </div>
-
         <div class="skill-card reveal reveal-delay-1">
           <div class="skill-card-icon">🎨</div>
           <div class="skill-card-name">Frontend Development</div>
           <div class="skill-bar-wrap">
             <div class="skill-bar-label">
-              <span class="skill-bar-text">React / JavaScript</span>
-              <span class="skill-bar-pct">85%</span>
+              <span class="skill-bar-text">React / JavaScript</span
+              ><span class="skill-bar-pct">85%</span>
             </div>
             <div class="skill-bar-bg">
               <div class="skill-bar" data-width="85%"></div>
             </div>
           </div>
           <div class="skill-card-tags">
-            <span class="skill-tag">React</span>
-            <span class="skill-tag">JavaScript</span>
-            <span class="skill-tag">Tailwind CSS</span>
-            <span class="skill-tag">Vite</span>
-            <span class="skill-tag">Axios</span>
-            <span class="skill-tag">Vue.js</span>
+            <span class="skill-tag">React</span
+            ><span class="skill-tag">JavaScript</span
+            ><span class="skill-tag">Tailwind CSS</span
+            ><span class="skill-tag">Vite</span
+            ><span class="skill-tag">Axios</span
+            ><span class="skill-tag">Vue.js</span>
           </div>
         </div>
-
         <div class="skill-card reveal reveal-delay-2">
           <div class="skill-card-icon">🗄️</div>
           <div class="skill-card-name">Database & Architecture</div>
           <div class="skill-bar-wrap">
             <div class="skill-bar-label">
-              <span class="skill-bar-text">MySQL / DB Design</span>
-              <span class="skill-bar-pct">80%</span>
+              <span class="skill-bar-text">MySQL / DB Design</span
+              ><span class="skill-bar-pct">80%</span>
             </div>
             <div class="skill-bar-bg">
               <div class="skill-bar" data-width="80%"></div>
             </div>
           </div>
           <div class="skill-card-tags">
-            <span class="skill-tag">MySQL</span>
-            <span class="skill-tag">Schema Design</span>
-            <span class="skill-tag">Migrations</span>
-            <span class="skill-tag">Indexing</span>
-            <span class="skill-tag">Query Opt.</span>
+            <span class="skill-tag">MySQL</span
+            ><span class="skill-tag">Schema Design</span
+            ><span class="skill-tag">Migrations</span
+            ><span class="skill-tag">Indexing</span
+            ><span class="skill-tag">Query Opt.</span>
           </div>
         </div>
-
         <div class="skill-card reveal">
           <div class="skill-card-icon">🔐</div>
           <div class="skill-card-name">Security & Auth</div>
           <div class="skill-bar-wrap">
             <div class="skill-bar-label">
-              <span class="skill-bar-text">Auth / Security</span>
-              <span class="skill-bar-pct">82%</span>
+              <span class="skill-bar-text">Auth / Security</span
+              ><span class="skill-bar-pct">82%</span>
             </div>
             <div class="skill-bar-bg">
               <div class="skill-bar" data-width="82%"></div>
             </div>
           </div>
           <div class="skill-card-tags">
-            <span class="skill-tag">Sanctum</span>
-            <span class="skill-tag">Passport</span>
-            <span class="skill-tag">JWT</span>
-            <span class="skill-tag">RBAC</span>
-            <span class="skill-tag">CSRF</span>
+            <span class="skill-tag">Sanctum</span
+            ><span class="skill-tag">Passport</span
+            ><span class="skill-tag">JWT</span
+            ><span class="skill-tag">RBAC</span
+            ><span class="skill-tag">CSRF</span>
           </div>
         </div>
-
         <div class="skill-card reveal reveal-delay-1">
           <div class="skill-card-icon">📦</div>
           <div class="skill-card-name">DevOps & Tools</div>
           <div class="skill-bar-wrap">
             <div class="skill-bar-label">
-              <span class="skill-bar-text">Git / DevOps</span>
-              <span class="skill-bar-pct">75%</span>
+              <span class="skill-bar-text">Git / DevOps</span
+              ><span class="skill-bar-pct">75%</span>
             </div>
             <div class="skill-bar-bg">
               <div class="skill-bar" data-width="75%"></div>
             </div>
           </div>
           <div class="skill-card-tags">
-            <span class="skill-tag">Git</span>
-            <span class="skill-tag">GitHub</span>
-            <span class="skill-tag">Composer</span>
-            <span class="skill-tag">npm</span>
-            <span class="skill-tag">Linux</span>
+            <span class="skill-tag">Git</span
+            ><span class="skill-tag">GitHub</span
+            ><span class="skill-tag">Composer</span
+            ><span class="skill-tag">npm</span
+            ><span class="skill-tag">Linux</span>
           </div>
         </div>
-
         <div class="skill-card reveal reveal-delay-2">
           <div class="skill-card-icon">🏗️</div>
           <div class="skill-card-name">SaaS Architecture</div>
           <div class="skill-bar-wrap">
             <div class="skill-bar-label">
-              <span class="skill-bar-text">SaaS Patterns</span>
-              <span class="skill-bar-pct">78%</span>
+              <span class="skill-bar-text">SaaS Patterns</span
+              ><span class="skill-bar-pct">78%</span>
             </div>
             <div class="skill-bar-bg">
               <div class="skill-bar" data-width="78%"></div>
             </div>
           </div>
           <div class="skill-card-tags">
-            <span class="skill-tag">Multi-Tenancy</span>
-            <span class="skill-tag">Subscription</span>
-            <span class="skill-tag">PDF Export</span>
-            <span class="skill-tag">i18n</span>
-            <span class="skill-tag">Caching</span>
+            <span class="skill-tag">Multi-Tenancy</span
+            ><span class="skill-tag">Subscription</span
+            ><span class="skill-tag">PDF Export</span
+            ><span class="skill-tag">i18n</span
+            ><span class="skill-tag">Caching</span>
           </div>
         </div>
       </div>
@@ -1311,7 +1470,6 @@
       <h2 class="section-title reveal reveal-delay-1">
         Selected <em>projects</em>
       </h2>
-
       <div class="projects-grid">
         <div class="project-card featured reveal">
           <div class="project-card-content">
@@ -1324,12 +1482,12 @@
               queries for high-throughput performance.
             </div>
             <div class="project-tech">
-              <span class="project-tech-tag">Laravel</span>
-              <span class="project-tech-tag">React</span>
-              <span class="project-tech-tag">MySQL</span>
-              <span class="project-tech-tag">PDF Engine</span>
-              <span class="project-tech-tag">i18n</span>
-              <span class="project-tech-tag">Sanctum</span>
+              <span class="project-tech-tag">Laravel</span
+              ><span class="project-tech-tag">React</span
+              ><span class="project-tech-tag">MySQL</span
+              ><span class="project-tech-tag">PDF Engine</span
+              ><span class="project-tech-tag">i18n</span
+              ><span class="project-tech-tag">Sanctum</span>
             </div>
             <div class="project-card-footer">
               <div class="project-status"><span></span> Live Project</div>
@@ -1343,7 +1501,6 @@
           </div>
           <div class="project-card-visual">📄</div>
         </div>
-
         <div class="project-card reveal">
           <div class="project-card-number">02</div>
           <div class="project-card-title">Invoice Management System</div>
@@ -1354,11 +1511,11 @@
             tracking, and PDF generation.
           </div>
           <div class="project-tech">
-            <span class="project-tech-tag">Laravel</span>
-            <span class="project-tech-tag">PHP</span>
-            <span class="project-tech-tag">MySQL</span>
-            <span class="project-tech-tag">RBAC</span>
-            <span class="project-tech-tag">Blade</span>
+            <span class="project-tech-tag">Laravel</span
+            ><span class="project-tech-tag">PHP</span
+            ><span class="project-tech-tag">MySQL</span
+            ><span class="project-tech-tag">RBAC</span
+            ><span class="project-tech-tag">Blade</span>
           </div>
           <div class="project-card-footer">
             <div class="project-status"><span></span> Completed</div>
@@ -1370,7 +1527,6 @@
             >
           </div>
         </div>
-
         <div class="project-card reveal reveal-delay-1">
           <div class="project-card-number">03</div>
           <div class="project-card-title">Business CRM Platform</div>
@@ -1380,11 +1536,11 @@
             analytics dashboard with real-time data visualization.
           </div>
           <div class="project-tech">
-            <span class="project-tech-tag">Laravel</span>
-            <span class="project-tech-tag">React</span>
-            <span class="project-tech-tag">REST API</span>
-            <span class="project-tech-tag">Charts</span>
-            <span class="project-tech-tag">MySQL</span>
+            <span class="project-tech-tag">Laravel</span
+            ><span class="project-tech-tag">React</span
+            ><span class="project-tech-tag">REST API</span
+            ><span class="project-tech-tag">Charts</span
+            ><span class="project-tech-tag">MySQL</span>
           </div>
           <div class="project-card-footer">
             <div class="project-status"><span></span> In Progress</div>
@@ -1405,7 +1561,6 @@
       <h2 class="section-title reveal reveal-delay-1">
         Let's build something<br /><em>great</em> together
       </h2>
-
       <div class="contact-grid">
         <div class="contact-info reveal">
           <p>
@@ -1447,33 +1602,32 @@
               target="_blank"
               class="contact-link"
             >
-              <div class="contact-link-icon">💻</div>
+              <div class="contact-link-icon">💼</div>
               <div>
-                <div class="contact-link-label">linkedin</div>
+                <div class="contact-link-label">LinkedIn</div>
                 <div class="contact-link-value">linkedin.com/in/ayoub-sofi</div>
               </div>
               <div class="contact-link-arrow">→</div>
             </a>
           </div>
         </div>
-
         <div id="send_message" class="reveal reveal-delay-2">
           <div class="contact-form">
             <div class="form-group">
-              <label class="form-label">Your Name</label>
-              <input class="form-input" type="text" placeholder="John Doe" />
+              <label class="form-label">Your Name</label
+              ><input class="form-input" type="text" placeholder="John Doe" />
             </div>
             <div class="form-group">
-              <label class="form-label">Email Address</label>
-              <input
+              <label class="form-label">Email Address</label
+              ><input
                 class="form-input"
                 type="email"
                 placeholder="john@company.com"
               />
             </div>
             <div class="form-group">
-              <label class="form-label">Message</label>
-              <textarea
+              <label class="form-label">Message</label
+              ><textarea
                 class="form-textarea"
                 placeholder="Tell me about your project..."
               ></textarea>
@@ -1506,7 +1660,25 @@
     </footer>
 
     <script>
-      // Cursor
+      /* ── THEME ── */
+      const html = document.documentElement;
+      const themeBtn = document.getElementById("themeBtn");
+      const themeIcon = document.getElementById("themeIcon");
+
+      // Restore saved preference
+      const saved = localStorage.getItem("theme") || "dark";
+      html.setAttribute("data-theme", saved);
+      themeIcon.textContent = saved === "dark" ? "🌙" : "☀️";
+
+      themeBtn.addEventListener("click", () => {
+        const isDark = html.getAttribute("data-theme") === "dark";
+        const next = isDark ? "light" : "dark";
+        html.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+        themeIcon.textContent = next === "dark" ? "🌙" : "☀️";
+      });
+
+      /* ── CURSOR ── */
       const cursor = document.getElementById("cursor");
       const ring = document.getElementById("cursor-ring");
       let mx = 0,
@@ -1519,18 +1691,15 @@
         cursor.style.left = mx + "px";
         cursor.style.top = my + "px";
       });
-      function animRing() {
+      (function animRing() {
         rx += (mx - rx) * 0.12;
         ry += (my - ry) * 0.12;
         ring.style.left = rx + "px";
         ring.style.top = ry + "px";
         requestAnimationFrame(animRing);
-      }
-      animRing();
+      })();
       document
-        .querySelectorAll(
-          "a, button, .skill-card, .project-card, .contact-link",
-        )
+        .querySelectorAll("a,button,.skill-card,.project-card,.contact-link")
         .forEach((el) => {
           el.addEventListener("mouseenter", () => {
             cursor.style.transform = "translate(-50%,-50%) scale(2.5)";
@@ -1544,9 +1713,8 @@
           });
         });
 
-      // Scroll reveal
-      const reveals = document.querySelectorAll(".reveal");
-      const observer = new IntersectionObserver(
+      /* ── SCROLL REVEAL ── */
+      const obs = new IntersectionObserver(
         (entries) => {
           entries.forEach((e) => {
             if (e.isIntersecting) e.target.classList.add("visible");
@@ -1554,26 +1722,24 @@
         },
         { threshold: 0.1 },
       );
-      reveals.forEach((el) => observer.observe(el));
+      document.querySelectorAll(".reveal").forEach((el) => obs.observe(el));
 
-      // Skill bar animation
-      const skillBars = document.querySelectorAll(".skill-bar");
-      const barObserver = new IntersectionObserver(
+      /* ── SKILL BARS ── */
+      const barObs = new IntersectionObserver(
         (entries) => {
           entries.forEach((e) => {
             if (e.isIntersecting) {
               e.target.style.width = e.target.dataset.width;
-              e.target.style.transition =
-                "width 1.5s cubic-bezier(0.4,0,0.2,1)";
-              barObserver.unobserve(e.target);
+              e.target.style.transition = "width 1.5s cubic-bezier(.4,0,.2,1)";
+              barObs.unobserve(e.target);
             }
           });
         },
         { threshold: 0.3 },
       );
-      skillBars.forEach((b) => barObserver.observe(b));
+      document.querySelectorAll(".skill-bar").forEach((b) => barObs.observe(b));
 
-      // Active nav
+      /* ── ACTIVE NAV ── */
       const sections = document.querySelectorAll("section[id]");
       const navLinks = document.querySelectorAll(".nav-links a");
       window.addEventListener("scroll", () => {
