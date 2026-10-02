@@ -27,13 +27,11 @@ function About() {
       id="about"
       className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden bg-grid"
     >
-      {/* Ambient glows */}
       <div className="pointer-events-none absolute -top-32 -left-32 w-[420px] h-[420px] rounded-full bg-accent/10 blur-[120px]" />
       <div className="pointer-events-none absolute bottom-0 right-0 w-[380px] h-[380px] rounded-full bg-accent-green/10 blur-[120px]" />
 
       <div className="relative max-w-6xl mx-auto px-6 grid md:grid-cols-12 gap-10 lg:gap-12 items-center w-full">
         
-        {/* LEFT CONTENT */}
         <motion.div
           variants={container}
           initial="hidden"
@@ -75,8 +73,6 @@ function About() {
             I design and build modern, scalable web applications with clean
             architecture, intuitive interfaces, and reliable backend systems.
           </motion.p>
-
-          {/* Buttons */}
           <motion.div
             variants={item}
             className="mt-8 flex flex-wrap items-center gap-4"
@@ -106,8 +102,6 @@ function About() {
               <ArrowDown size={16} />
             </a>
           </motion.div>
-
-          {/* Social links */}
           <motion.div
             variants={item}
             className="mt-10 flex flex-wrap items-center gap-6"
@@ -147,8 +141,6 @@ function About() {
             </a>
           </motion.div>
         </motion.div>
-
-        {/* RIGHT IMAGE */}
         <motion.div
           initial={{ opacity: 0, scale: 0.94 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -161,10 +153,8 @@ function About() {
         >
           <div className="relative w-full max-w-[340px] sm:max-w-[440px] md:max-w-none">
             
-            {/* Decorative border */}
             <div className="absolute -inset-3 sm:-inset-4 border border-border rounded-2xl rotate-2" />
 
-            {/* Image container */}
             <div className="relative w-full h-[480px] sm:h-[550px] md:h-[600px] lg:h-[560px] rounded-2xl overflow-hidden border border-border bg-card shadow-2xl shadow-black/20">
               <img
                 src="/assets/GVCF.jpg"
