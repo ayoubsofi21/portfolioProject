@@ -2,8 +2,6 @@ import { useState } from "react";
 import emailjs from "@emailjs/browser";
 import { Send, Loader2, CheckCircle2, AlertCircle, Mail } from "lucide-react";
 import { contactInfo } from "../data/experience";
-
-// Status: "idle" | "sending" | "success" | "fallback_sent" | "error"
 function ContactForm() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState("idle");
@@ -21,11 +19,9 @@ function ContactForm() {
     setErrors(next);
     return Object.keys(next).length === 0;
   };
-
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-
   const mailtoUrl = `mailto:${contactInfo.email}?subject=${encodeURIComponent(
     `Portfolio message from ${form.name || "visitor"}`
   )}&body=${encodeURIComponent(
@@ -40,13 +36,11 @@ function ContactForm() {
     const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
     const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
 
-    // If EmailJS credentials are not configured in .env, automatically open default email client
     if (!publicKey || !serviceId || !templateId) {
       window.location.href = mailtoUrl;
       setStatus("fallback_sent");
       return;
     }
-
     setStatus("sending");
     try {
       await emailjs.send(
