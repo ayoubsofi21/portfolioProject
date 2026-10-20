@@ -84,7 +84,7 @@ function Navbar({ theme, toggleTheme }) {
               {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
             </button>
             <a
-              href="/assets/Ayoub_Sofi_CV.pdf"
+              href="/assets/CV_Ayoub_Sofi.pdf"
               download
               data-cursor-hover
               className="text-sm text-text-secondary hover:text-text transition-colors"
