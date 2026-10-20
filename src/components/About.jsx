@@ -93,7 +93,7 @@ function About() {
             </a>
 
             <a
-              href="/assets/Ayoub_Sofi_CV.pdf"
+              href="/assets/CV_Ayoub_Sofi.pdf"
               download
               data-cursor-hover
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border text-text hover:border-accent/50 transition-colors"
