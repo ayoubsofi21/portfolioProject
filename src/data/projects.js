@@ -1,8 +1,22 @@
-// Real project data — no fake links, no fake stats.
+
+ // Real project data — no fake links, no fake stats.
 export const projects = [
- {
+  {
     id: 1,
     number: "01",
+    title: "ElectroKamal",
+    description:
+      "An e-commerce platform for an electronics store, featuring product catalog management, new and used product filters, and cash-on-delivery ordering.",
+    technologies: ["Laravel", "React", "REST API", "MySQL", "Docker", "Tailwind CSS"],
+    status: "Completed",
+    featured: false,
+    github: null,
+    demo: "https://electrokamal-frontend-5gtm.onrender.com",
+    image: "/assets/projects/electrokamal.png",
+  },
+  {
+    id: 2,
+    number: "02",
     title: "Meettora",
     description:
       "A medical management platform designed around an API-first Laravel backend and React frontend.",
@@ -14,8 +28,8 @@ export const projects = [
     image: "/assets/projects/Meettora.png",
   },
   {
-    id: 2,
-    number: "02",
+    id: 3,
+    number: "03",
     title: "GestionFactures",
     description:
       "An invoice management application for managing clients, invoices, payments and PDF documents.",
@@ -27,8 +41,8 @@ export const projects = [
     image: "/assets/projects/GestionFactures.png",
   },
   {
-    id: 3,
-    number: "03",
+    id: 4,
+    number: "04",
     title: "DelishUp",
     description:
       "A modern pastry shop platform with product management, ordering workflows and a modern customer-facing interface.",
@@ -39,5 +53,4 @@ export const projects = [
     demo: null,
     image: "/assets/projects/DelishUp.png",
   },
-  
 ];
