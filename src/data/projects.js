@@ -16,6 +16,19 @@ export const projects = [
   },
   {
     id: 2,
+    number: "04",
+    title: "DelishUp",
+    description:
+      "A modern pastry shop platform with product management, ordering workflows and a modern customer-facing interface.",
+    technologies: ["Laravel", "React", "MySQL", "Tailwind CSS"],
+    status: "In Development",
+    featured: false,
+    github: "https://github.com/ayoubsofi21",
+    demo: "https://frontend-y5h3.onrender.com",
+    image: "/assets/projects/DelishUp.png",
+  },
+  {
+    id: 3,
     number: "02",
     title: "Meettora",
     description:
@@ -28,7 +41,7 @@ export const projects = [
     image: "/assets/projects/Meettora.png",
   },
   {
-    id: 3,
+    id: 4,
     number: "03",
     title: "GestionFactures",
     description:
@@ -40,17 +53,5 @@ export const projects = [
     demo: null,
     image: "/assets/projects/GestionFactures.png",
   },
-  {
-    id: 4,
-    number: "04",
-    title: "DelishUp",
-    description:
-      "A modern pastry shop platform with product management, ordering workflows and a modern customer-facing interface.",
-    technologies: ["Laravel", "React", "MySQL", "Tailwind CSS"],
-    status: "In Development",
-    featured: false,
-    github: "https://github.com/ayoubsofi21",
-    demo: null,
-    image: "/assets/projects/DelishUp.png",
-  },
+  
 ];
